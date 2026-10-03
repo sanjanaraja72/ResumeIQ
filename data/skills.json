@@ -1,0 +1,11 @@
+{
+  "Programming": ["Python", "Java", "C", "C++", "C#", "JavaScript", "TypeScript", "Kotlin", "Go", "R", "PHP"],
+  "Web": ["HTML", "CSS", "React", "Angular", "Vue", "Node.js", "Express", "Flask", "Django", "Spring Boot", "Bootstrap", "Tailwind CSS", "REST API"],
+  "Database": ["SQL", "MySQL", "PostgreSQL", "MongoDB", "SQLite", "Firebase"],
+  "Data & AI": ["Machine Learning", "Deep Learning", "NLP", "Pandas", "NumPy", "Scikit-learn", "TensorFlow", "PyTorch", "OpenCV", "Data Visualization", "Power BI", "Tableau", "Excel", "Statistics"],
+  "Cloud & DevOps": ["AWS", "Azure", "Docker", "Kubernetes", "Git", "GitHub", "Linux", "CI/CD", "Jenkins"],
+  "Mobile": ["Android", "Flutter", "React Native"],
+  "Security": ["Cybersecurity", "Networking", "Ethical Hacking", "Cryptography"],
+  "Design": ["Figma", "UI/UX", "Adobe XD"],
+  "Soft Skills": ["Communication", "Teamwork", "Leadership", "Problem Solving", "Time Management"]
+}

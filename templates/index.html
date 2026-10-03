@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ResumeIQ | AI Resume Analyzer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="blob b1"></div><div class="blob b2"></div>
+
+  <nav class="container nav">
+    <a href="/" class="logo">Resume<span>IQ</span></a>
+    <div class="nav-links">
+      <a href="/" class="active">Analyzer</a>
+      <a href="/recruiter">Recruiter</a>
+      <button id="themeBtn" class="toggle">🌙</button>
+    </div>
+  </nav>
+
+  <header class="container hero">
+    <span class="badge">✨ AI-Powered Career Toolkit</span>
+    <h1>Discover your resume's <span class="grad">true potential</span></h1>
+    <p>Upload your resume and get an instant ATS score, best-fit job roles, missing skills and a personalised learning path.</p>
+  </header>
+
+  <main class="container">
+    {% with msgs = get_flashed_messages() %}
+      {% for m in msgs %}<div class="alert">⚠️ {{ m }}</div>{% endfor %}
+    {% endwith %}
+
+    <form action="/analyze" method="post" enctype="multipart/form-data" class="card upload" data-loader>
+      <label class="drop">
+        <input type="file" name="resume" accept=".pdf,.docx,.txt" hidden>
+        <div class="drop-icon">📄</div>
+        <h3 class="drop-title">Drag &amp; drop your resume</h3>
+        <p>or click to browse · PDF, DOCX, TXT · max 5 MB</p>
+      </label>
+      <button class="btn" type="submit">Analyze Resume →</button>
+    </form>
+
+    <section class="features">
+      <div class="card feat"><span>🎯</span><h4>ATS Score</h4><p>See how recruiter software rates your resume out of 100.</p></div>
+      <div class="card feat"><span>🧠</span><h4>Skill Detection</h4><p>NLP-based extraction of your technical and soft skills.</p></div>
+      <div class="card feat"><span>💼</span><h4>Role Matching</h4><p>Find the job roles that fit your profile best.</p></div>
+      <div class="card feat"><span>🚀</span><h4>Skill Recommendations</h4><p>Know exactly what to learn next, with learning links.</p></div>
+    </section>
+  </main>
+
+  <footer>ResumeIQ · AI-Based Resume Analyzer &amp; Skill Recommendation System</footer>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

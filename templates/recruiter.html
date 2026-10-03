@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recruiter Mode | ResumeIQ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="blob b1"></div><div class="blob b2"></div>
+
+  <nav class="container nav">
+    <a href="/" class="logo">Resume<span>IQ</span></a>
+    <div class="nav-links">
+      <a href="/">Analyzer</a>
+      <a href="/recruiter" class="active">Recruiter</a>
+      <button id="themeBtn" class="toggle">🌙</button>
+    </div>
+  </nav>
+
+  <header class="container hero" style="padding-bottom:0">
+    <span class="badge">🧑‍💼 For Recruiters</span>
+    <h1>Match a resume to a <span class="grad">job description</span></h1>
+    <p>Upload a candidate's resume, paste the job description and see how well they fit.</p>
+  </header>
+
+  <main class="container">
+    {% with msgs = get_flashed_messages() %}
+      {% for m in msgs %}<div class="alert" style="margin-top:20px">⚠️ {{ m }}</div>{% endfor %}
+    {% endwith %}
+
+    <form action="/recruiter" method="post" enctype="multipart/form-data" class="card upload" data-loader style="max-width:760px">
+      <label class="drop">
+        <input type="file" name="resume" accept=".pdf,.docx,.txt" hidden>
+        <div class="drop-icon">📄</div>
+        <h3 class="drop-title">Drag &amp; drop candidate resume</h3>
+        <p>or click to browse · PDF, DOCX, TXT</p>
+      </label>
+      <textarea name="jd" placeholder="Paste the job description here...">{{ request.form.get('jd', '') }}</textarea>
+      <button class="btn" type="submit">Check Match →</button>
+    </form>
+
+    {% if result %}
+    {% set sc = result.match %}
+    {% set col = 'var(--ok)' if sc >= 70 else ('var(--warn)' if sc >= 40 else 'var(--bad)') %}
+    <div class="dash" style="margin-top:36px">
+      <div class="card c4 center">
+        <h3>Match Score</h3>
+        <div class="ring-wrap">
+          <svg viewBox="0 0 120 120">
+            <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+            <circle class="ring-fg" cx="60" cy="60" r="52" data-score="{{ sc }}" style="stroke:{{ col }}"></circle>
+          </svg>
+          <div class="ring-num"><span data-count="{{ sc }}">0</span><small>% match</small></div>
+        </div>
+        <p class="muted" style="margin-top:14px">
+          {% if sc >= 70 %}Strong candidate 👍
+          {% elif sc >= 40 %}Moderate fit
+          {% else %}Weak fit{% endif %}
+        </p>
+      </div>
+
+      <div class="card c8">
+        <h3>✅ Matched Skills</h3>
+        <div class="chips">
+          {% for s in result.matched %}<span class="chip ok">{{ s }}</span>
+          {% else %}<span class="muted">No matching skills found.</span>{% endfor %}
+        </div>
+        <h3 style="margin-top:26px">❌ Missing Skills (required by JD)</h3>
+        <div class="chips">
+          {% for s in result.missing %}<span class="chip miss">{{ s }}</span>
+          {% else %}<span class="muted">Candidate has all required skills 🎉</span>{% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </main>
+
+  <footer>ResumeIQ · AI-Based Resume Analyzer &amp; Skill Recommendation System</footer>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Analysis | ResumeIQ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="blob b1"></div><div class="blob b2"></div>
+
+  <nav class="container nav">
+    <a href="/" class="logo">Resume<span>IQ</span></a>
+    <div class="nav-links">
+      <a href="/" class="active">Analyzer</a>
+      <a href="/recruiter">Recruiter</a>
+      <button id="themeBtn" class="toggle">🌙</button>
+    </div>
+  </nav>
+
+  {% set maxes = {'Sections':30,'Contact Info':10,'Skills':30,'Impact':20,'Length':10} %}
+  {% set sc = r.ats_score %}
+  {% set col = 'var(--ok)' if sc >= 75 else ('var(--warn)' if sc >= 50 else 'var(--bad)') %}
+
+  <main class="container">
+    <div class="page-head">
+      <h2>Analysis for <span class="grad">{{ r.contact.name }}</span></h2>
+      <p>{{ r.skill_count }} skills detected · {{ r.word_count }} words</p>
+    </div>
+
+    <div class="dash">
+
+      <!-- ATS ring -->
+      <div class="card c4 center">
+        <h3>ATS Score</h3>
+        <div class="ring-wrap">
+          <svg viewBox="0 0 120 120">
+            <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+            <circle class="ring-fg" cx="60" cy="60" r="52" data-score="{{ sc }}" style="stroke:{{ col }}"></circle>
+          </svg>
+          <div class="ring-num"><span data-count="{{ sc }}">0</span><small>out of 100</small></div>
+        </div>
+        <p class="muted" style="margin-top:14px">
+          {% if sc >= 75 %}Excellent! Your resume is ATS-friendly.
+          {% elif sc >= 50 %}Good start. A few improvements needed.
+          {% else %}Needs work. Check the tips below.{% endif %}
+        </p>
+      </div>
+
+      <!-- Breakdown -->
+      <div class="card c8">
+        <h3>Score Breakdown</h3>
+        {% for k, v in r.breakdown.items() %}
+        <div class="row">
+          <div class="row-top"><span>{{ k }}</span><span>{{ v }} / {{ maxes[k] }}</span></div>
+          <div class="bar"><div class="bar-fill" data-w="{{ (v / maxes[k] * 100) | round | int }}"></div></div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Best role -->
+      <div class="card c4 center">
+        <h3>Best Matching Role</h3>
+        <div class="stat grad">{{ r.best_role.match }}%</div>
+        <p style="font-weight:600;margin-top:6px">{{ r.best_role.role }}</p>
+        <p class="muted" style="margin-top:12px">You have {{ r.best_role.have|length }} of {{ r.best_role.have|length + r.best_role.missing|length }} key skills</p>
+        <div class="chips" style="justify-content:center;margin-top:14px">
+          {% for s in r.best_role.have %}<span class="chip ok">{{ s }}</span>{% endfor %}
+        </div>
+      </div>
+
+      <!-- Role chart -->
+      <div class="card c8">
+        <h3>Top Job Role Matches</h3>
+        <div class="chart-box">
+          <canvas id="roleChart"
+            data-labels='{{ r.roles | map(attribute="role") | list | tojson }}'
+            data-values='{{ r.roles | map(attribute="match") | list | tojson }}'></canvas>
+        </div>
+      </div>
+
+      <!-- Skills -->
+      <div class="card c12">
+        <h3>Detected Skills</h3>
+        {% if r.skills %}
+          {% for cat, items in r.skills.items() %}
+            <div class="cat">{{ cat }}</div>
+            <div class="chips">{% for s in items %}<span class="chip">{{ s }}</span>{% endfor %}</div>
+          {% endfor %}
+        {% else %}
+          <p class="muted">No known skills detected. Add a clear Skills section.</p>
+        {% endif %}
+      </div>
+
+      <!-- Recommendations -->
+      <div class="card c6">
+        <h3>🚀 Skills to Learn for {{ r.best_role.role }}</h3>
+        {% for x in r.recommendations %}
+        <div class="rec">
+          <span>{{ x.skill }}<span class="pri {{ x.priority }}">{{ x.priority }}</span></span>
+          <a href="{{ x.link }}" target="_blank" rel="noopener">Learn →</a>
+        </div>
+        {% else %}
+        <p class="muted">🎉 You already have all key skills for this role!</p>
+        {% endfor %}
+      </div>
+
+      <!-- Tips -->
+      <div class="card c6">
+        <h3>💡 Resume Improvement Tips</h3>
+        {% if r.tips %}
+        <ul class="tips">{% for t in r.tips %}<li>{{ t }}</li>{% endfor %}</ul>
+        {% else %}
+        <p class="muted">Great job! No major issues found.</p>
+        {% endif %}
+      </div>
+
+    </div>
+
+    <div class="center-btn">
+      <a href="/" class="btn inline">Analyze Another Resume</a>
+      <a href="/recruiter" class="btn inline ghost">Recruiter Mode</a>
+    </div>
+  </main>
+
+  <footer>ResumeIQ · AI-Based Resume Analyzer &amp; Skill Recommendation System</footer>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

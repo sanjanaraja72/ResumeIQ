@@ -1,0 +1,13 @@
+{
+  "Data Scientist": ["Python", "Machine Learning", "Statistics", "Pandas", "NumPy", "SQL", "Data Visualization", "Scikit-learn", "Deep Learning"],
+  "Machine Learning Engineer": ["Python", "Machine Learning", "Deep Learning", "TensorFlow", "PyTorch", "Scikit-learn", "Docker", "Git", "NLP"],
+  "Data Analyst": ["SQL", "Excel", "Python", "Power BI", "Tableau", "Pandas", "Statistics", "Data Visualization"],
+  "Full Stack Developer": ["HTML", "CSS", "JavaScript", "React", "Node.js", "MongoDB", "SQL", "Git", "REST API"],
+  "Frontend Developer": ["HTML", "CSS", "JavaScript", "React", "Bootstrap", "Tailwind CSS", "Git", "Figma"],
+  "Backend Developer": ["Python", "Flask", "Django", "SQL", "REST API", "MongoDB", "Docker", "Git", "Linux"],
+  "Java Developer": ["Java", "Spring Boot", "SQL", "MySQL", "REST API", "Git", "Docker"],
+  "DevOps / Cloud Engineer": ["Linux", "Docker", "Kubernetes", "AWS", "CI/CD", "Jenkins", "Git", "Python"],
+  "Android Developer": ["Java", "Kotlin", "Android", "Firebase", "REST API", "Git", "SQLite"],
+  "Cybersecurity Analyst": ["Cybersecurity", "Networking", "Linux", "Ethical Hacking", "Cryptography", "Python"],
+  "UI/UX Designer": ["Figma", "UI/UX", "Adobe XD", "HTML", "CSS", "Communication"]
+}
