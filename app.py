@@ -63,3 +63,35 @@ def recruiter():
 
 if __name__ == "__main__":
     app.run(debug=True)
+    @app.route("/analyze", methods=["POST"])
+def analyze():
+    file = request.files.get("resume")
+    if not file or not file.filename or not allowed(file.filename):
+        flash("Please upload a PDF, DOCX or TXT file.")
+        return redirect(url_for("index"))
+    try:
+        text, _ = read_upload(file)
+    except Exception:
+        flash("Could not read this file. Please upload a valid PDF or DOCX resume.")
+        return redirect(url_for("index"))
+    if len(text) < 50:
+        flash("Could not read text from the file. Try another resume.")
+        return redirect(url_for("index"))
+    return render_template("result.html", r=analyze_resume(text))
+
+
+@app.route("/recruiter", methods=["GET", "POST"])
+def recruiter():
+    result = None
+    if request.method == "POST":
+        file = request.files.get("resume")
+        jd = request.form.get("jd", "")
+        if file and file.filename and allowed(file.filename) and jd.strip():
+            try:
+                text, _ = read_upload(file)
+                result = match_with_jd(text, jd)
+            except Exception:
+                flash("Could not read this file. Please upload a valid PDF or DOCX resume.")
+        else:
+            flash("Upload a resume and paste the job description.")
+    return render_template("recruiter.html", result=result)

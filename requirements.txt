@@ -1,5 +1,7 @@
-   flask
-   pdfplumber
-   python-docx
-   scikit-learn
-   gunicorn
+flask
+pdfplumber
+python-docx
+scikit-learn
+gunicorn
+pypdf
+pymupdf
